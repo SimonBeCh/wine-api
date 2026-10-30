@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class WineApiApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(WineApiApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(WineApiApplication.class, args);
+    }
 
 }
