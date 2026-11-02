@@ -1,7 +1,9 @@
 package com.example.wineapi.dto;
 
+import java.util.List;
+
 public record WineResponse(
-        WineDTO recommendedWine,
+        List<WineDTO> recommendedWines,
         String reason
 ) {
 }
