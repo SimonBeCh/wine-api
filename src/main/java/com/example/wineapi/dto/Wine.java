@@ -1,11 +1,13 @@
 package com.example.wineapi.dto;
 
+import java.util.List;
+
 public record Wine(
         String id,
         String name,
         String producer,
         int vintage,
-        String grape,
+        List<String> grapes,
         String region,
         double glassPrice,
         double bottlePrice
