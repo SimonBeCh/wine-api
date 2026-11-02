@@ -7,6 +7,9 @@ public record WineDTO(
         String name,
         List<String> grapes,
         BigDecimal price,
-        String tasteNotes
+        String tasteNotes,
+        String vintage,
+        String producent,
+        String country
 )
 {}
