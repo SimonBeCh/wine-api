@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### language files for OCR ###
+tessdata/
