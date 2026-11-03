@@ -34,3 +34,6 @@ build/
 
 ### language files for OCR ###
 tessdata/
+
+### Desktop services store ###
+.DS_Store
