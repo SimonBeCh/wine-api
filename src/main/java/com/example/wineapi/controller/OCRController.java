@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,8 +25,8 @@ public class OCRController {
         this.ocrService = ocrService;
     }
 
-    @PostMapping("/wine/image")
-    public String convertImageToText(@RequestBody MultipartFile multipartFile)
+    @PostMapping("/wine/image/suggest")
+    public String convertImageToText(@RequestParam("file") MultipartFile multipartFile)
             throws IllegalArgumentException, TesseractException, IOException {
         LOGGER.info("Processing image from request");
         return ocrService.processImage(multipartFile);
