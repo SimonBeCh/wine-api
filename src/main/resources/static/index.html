@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vinanbefaling</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+</head>
+<body>
+<main>
+    <h1>Find den rette vin</h1>
+
+    <form id="wineForm">
+        <div id="dropZone">
+            <p>Træk et billede af vinkortet herind, eller klik for at vælge</p>
+            <input type="file" id="fileInput" accept="image/*" hidden>
+            <img id="preview" alt="Preview af vinkort" hidden>
+        </div>
+
+        <label for="meal">Hvad skal du spise?</label>
+        <input type="text" id="meal" placeholder="Fx andebryst med kirsebærsauce" required>
+
+        <button type="submit">Find vin</button>
+    </form>
+
+    <div id="result"></div>
+</main>
+</body>
+</html>
