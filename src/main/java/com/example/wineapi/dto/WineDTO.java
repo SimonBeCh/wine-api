@@ -10,6 +10,6 @@ public record WineDTO(
         String tasteNotes,
         String vintage,
         String producent,
-        String country
+        String region
 )
 {}

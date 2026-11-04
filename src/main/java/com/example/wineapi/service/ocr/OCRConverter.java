@@ -15,7 +15,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 @Service
-public class OCRService {
+public class OCRConverter {
 
     @Value("${ocr.tessdata-path}")
     private String TESSDATA_PATH;
@@ -23,7 +23,7 @@ public class OCRService {
     @Value("${ocr.language}")
     private String LANGUAGE_PATH;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OCRService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OCRConverter.class);
 
     @PostConstruct
     public void init() {
