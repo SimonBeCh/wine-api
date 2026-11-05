@@ -3,7 +3,7 @@ const fileInput = document.getElementById("fileInput");
 const preview = document.getElementById("preview");
 
 const wineForm = document.getElementById("wineForm");
-const mealInput = document.getElementById("meal")
+const mealInput = document.getElementById("meal");
 
 let selectedFile = null;
 
@@ -14,7 +14,7 @@ function showFile(file) {
 }
 
 fileInput.addEventListener("change", () => {
-    showFile(fileInput.files(0));
+    showFile(fileInput.files[0]);
 });
 
 
@@ -33,7 +33,7 @@ dropZone.addEventListener("dragleave", () => {
 
 dropZone.addEventListener("drop", (event) => {
     event.preventDefault();
-    dropZone.classList.remove("dragover")
+    dropZone.classList.remove("dragover");
 
     const file = event.dataTransfer.files[0];
     if (file && file.type.startsWith("image/")) {
@@ -43,18 +43,26 @@ dropZone.addEventListener("drop", (event) => {
 
 //Formular
 wineForm.addEventListener("submit", async (event) => {
+
     event.preventDefault();
 
     if (!selectedFile) {
-        alert("Vælg et billede af vinkortet først");
+        alert("vælg et billede af vinkortet først");
         return;
     }
 
-    const wineRequest = {
-        wines: [],
-        mealPairing: mealInput.value
-    }
-})
+    const formData = new FormData();
+    formData.append("image", selectedFile);
+    formData.append("mealPairing", mealInput.value);
+
+    const response = await fetch("/wine/image/suggest", {
+        method: "POST",
+        body: formData
+    });
+
+   const data = await response.json();
+   console.log(data);
+});
 
 
 
