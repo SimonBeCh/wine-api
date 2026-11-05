@@ -26,8 +26,14 @@ main {
     padding: 0 16px;
 }
 
+h1, .wine h3 {
+    font-family: "Fraunces", Georgia, serif;
+}
+
 h1 {
     font-weight: 600;
+    font-size: 2.5rem;
+    letter-spacing: -0.02em;
     margin-bottom: 24px;
 }
 
@@ -127,8 +133,16 @@ button:disabled {
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
+.wine.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 4px;
+}
+
 .wine h3 {
-    margin: 0 0 4px;
+    margin: 0;
 }
 
 .wine p {
@@ -139,4 +153,18 @@ button:disabled {
 .wine .price {
     color: var(--text);
     font-weight: 600;
+    white-space: nowrap;
+}
+
+.reason, .wine {
+    animation: fadeUp 0.4s ease both;
+}
+
+.wine:nth-of-type(2) {
+    animation-delay: 0.1s;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translate(8px); }
+    to { opacity: 1; transform: translate(0); }
 }

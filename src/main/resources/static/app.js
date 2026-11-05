@@ -23,15 +23,17 @@ function showResult(data) {
 
     for (const wine of data.recommendedWines) {
         html += `
-            <div class="wine">
-                <h3>${wine.name}</h3>
-                <p>${wine.producent ?? ""} · ${wine.region ?? ""} · ${wine.vintage ?? ""}</p>
-                <p>${wine.tasteNotes ?? ""}</p>
-                <p class="price">${wine.price ?? ""} kr.</p>
-            </div>
-        `;
+    <div class="wine">
+        <div class="wine-header">
+            <h3>${wine.name}</h3>
+            <span class="price">${wine.price ?? ""} kr.</span>
+        </div>
+        <p>${wine.producent ?? ""} · ${wine.region ?? ""} · ${wine.vintage ?? ""}</p>
+        <p>${wine.grapes?.join(", ") ?? ""}</p>
+        <p>${wine.tasteNotes ?? ""}</p>
+    </div>
+`;
     }
-
     result.innerHTML = html;
 }
 
