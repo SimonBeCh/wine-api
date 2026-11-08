@@ -37,7 +37,6 @@ public class OCRConverter {
 
         try {
             BufferedImage bi = convertToImage(multipartFile);
-            bi = binarize(bi);
             return runTesseract(bi);
         } catch (IllegalArgumentException e) {
             LOGGER.error("File could not be read");
