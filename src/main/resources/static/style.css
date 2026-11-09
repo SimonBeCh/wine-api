@@ -168,3 +168,15 @@ button:disabled {
     from { opacity: 0; transform: translate(8px); }
     to { opacity: 1; transform: translate(0); }
 }
+
+#resetButton {
+    width: 100%;
+    margin-top: 8px;
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+}
+
+#resetButton:hover {
+    background: #fbf6f7;
+}
