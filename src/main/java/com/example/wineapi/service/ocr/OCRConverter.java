@@ -10,12 +10,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.nio.Buffer;
 
 @Service
 public class OCRConverter {
@@ -37,7 +38,9 @@ public class OCRConverter {
 
         try {
             BufferedImage bi = convertToImage(multipartFile);
-            return runTesseract(bi);
+            BufferedImage scale = scaleImage(bi);
+            BufferedImage binarized = binarize(scale);
+            return runTesseract(binarized);
         } catch (IllegalArgumentException e) {
             LOGGER.error("File could not be read");
             throw new IOException("File could not be read");
@@ -61,52 +64,31 @@ public class OCRConverter {
         return bi;
     }
 
+    public static BufferedImage scaleImage(BufferedImage bi) {
+        int w = bi.getWidth();
+        int h = bi.getHeight();
+
+        BufferedImage scaled = new BufferedImage(w * 2, h * 2, BufferedImage.TYPE_BYTE_GRAY);
+
+        Graphics2D g = scaled.createGraphics();
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+
+        AffineTransform at = AffineTransform.getScaleInstance(2.0, 2.0);
+
+        g.drawImage(bi, at, null);
+        g.dispose();
+        return scaled;
+    }
+
     public static BufferedImage grayScale(BufferedImage image) {
 
         BufferedImage grayScaledImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
-        WritableRaster raster = grayScaledImage.getRaster();
-
-        for (int x = 0; x < image.getWidth(); x++) {
-            for (int y = 0; y < image.getHeight(); y++) {
-
-                int rgb = image.getRGB(x, y);
-                int r = (rgb >> 16) & 0xff;
-                int g = (rgb >> 8) & 0xff;
-                int b = (rgb & 0xff);
-
-                float rr = (float) Math.pow(r / 255.0, 2.2);
-                float gg = (float) Math.pow(g / 255.0, 2.2);
-                float bb = (float) Math.pow(b / 255.0, 2.2);
-
-                float lum = (float) (0.2126 * rr + 0.7152 * gg + 0.0722 * bb);
-
-                int grayLevel = (int) (255.0 * Math.pow(lum, 1.0 / 2.2));
-                int gray = (grayLevel << 16) + (grayLevel << 8) + grayLevel;
-
-                raster.setSample(x, y, 0, gray);
-            }
-        }
+        Graphics g = grayScaledImage.getGraphics();
+        g.drawImage(image, 0, 0, null);
+        g.dispose();
         return grayScaledImage;
     }
 
-    /*
-    public static BufferedImage binarize(BufferedImage originalImage) {
-
-        BufferedImage grayScaledImg = grayScale(originalImage);
-        double setImageThreshold = optimizeIsoData(grayScaledImg);
-
-        BufferedImage binarizedImage = new BufferedImage(grayScaledImg.getWidth(), grayScaledImg.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
-        WritableRaster binarizedRaster = binarizedImage.getRaster();
-
-        Raster greyImgRaster = grayScaledImg.getRaster();
-        for (int x = 0; x < grayScaledImg.getWidth(); x++) {
-            for (int y = 0; y < grayScaledImg.getHeight(); y++) {
-
-            }
-        }
-        return binarizedImage;
-    }
-*/
     public static double optimizeIsoData(BufferedImage image) {
 
         Raster raster = image.getRaster();
@@ -120,7 +102,7 @@ public class OCRConverter {
         // Start value // T-sub-1 counter
         double currentThreshold = pixelValueSum / (image.getWidth() * image.getHeight());
 
-            double oldThreshold;
+        double oldThreshold;
         do {
             long sumBackGround = 0, sumForeGround = 0;
             int backGroundCount = 0, foreGroundCount = 0;
@@ -145,15 +127,36 @@ public class OCRConverter {
                 break;
             }
 
-                double backAve = (double) sumBackGround / backGroundCount;
-                double frontAve = (double) sumForeGround / foreGroundCount;
+            double backAve = (double) sumBackGround / backGroundCount;
+            double frontAve = (double) sumForeGround / foreGroundCount;
 
-                oldThreshold = currentThreshold;
-                currentThreshold = (backAve + frontAve) / 2;
+            oldThreshold = currentThreshold;
+            currentThreshold = (backAve + frontAve) / 2;
 
         } while(Math.abs(oldThreshold - currentThreshold) >= 1);
 
         return currentThreshold;
+    }
+
+    public static BufferedImage binarize(BufferedImage originalImage) {
+
+        BufferedImage grayScaledImg = grayScale(originalImage);
+        double setImageThreshold = optimizeIsoData(grayScaledImg);
+
+        BufferedImage binarizedImage = new BufferedImage(grayScaledImg.getWidth(), grayScaledImg.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
+        WritableRaster binarizedRaster = binarizedImage.getRaster();
+
+        Raster greyImgRaster = grayScaledImg.getRaster();
+        for (int x = 0; x < grayScaledImg.getWidth(); x++) {
+            for (int y = 0; y < grayScaledImg.getHeight(); y++) {
+                    int value = greyImgRaster.getSample(x, y, 0);
+
+                int output = (value > setImageThreshold) ? 255 : 0;
+
+                binarizedRaster.setSample(x, y, 0, output);
+            }
+        }
+        return binarizedImage;
     }
 
     public String runTesseract(BufferedImage bi) throws TesseractException {
@@ -170,3 +173,4 @@ public class OCRConverter {
         }
     }
 }
+

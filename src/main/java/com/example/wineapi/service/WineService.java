@@ -37,7 +37,7 @@ public class WineService {
 
         String ocrText = ocrConverter.processImage(image);
         if (ocrText.isEmpty()) {
-            throw new IllegalArgumentException("Not text could be read from image chosen");
+            throw new IllegalArgumentException("No text could be read from image chosen");
         }
 
         return chat.prompt()
