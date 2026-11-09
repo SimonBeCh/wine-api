@@ -37,6 +37,18 @@ function showResult(data) {
     result.innerHTML = html;
 }
 
+function resetForm() {
+    wineForm.reset();
+    selectedFile = null;
+    preview.hidden = true;
+    preview.removeAttribute("src");
+    result.innerHTML = "";
+    resetButton.hidden = true;
+
+    window.scrollTo({top: 0, behavior: "smooth"});
+    mealInput.focus();
+}
+
 dropZone.addEventListener("click", () => {
     fileInput.click();
 });
@@ -96,11 +108,8 @@ wineForm.addEventListener("submit", async (event) => {
     } finally {
         button.disabled = false;
         button.textContent = "Find vin";
+        resetButton.hidden = false;
     }
 });
 
-
-
-
-
-
+resetButton.addEventListener("click",resetForm);
