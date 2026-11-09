@@ -19,13 +19,10 @@ import java.io.IOException;
 
 public class OCRController {
 
-    private final OCRConverter ocrConverter;
-
     private final static Logger LOGGER = LoggerFactory.getLogger(OCRController.class);
     private final WineService wineService;
 
-    public OCRController(OCRConverter ocrConverter, WineService wineService) {
-        this.ocrConverter = ocrConverter;
+    public OCRController(WineService wineService) {
         this.wineService = wineService;
     }
 
