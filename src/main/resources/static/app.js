@@ -1,10 +1,10 @@
 const dropZone = document.getElementById("dropZone");
 const fileInput = document.getElementById("fileInput");
 const preview = document.getElementById("preview");
-
 const wineForm = document.getElementById("wineForm");
 const mealInput = document.getElementById("meal");
 const result = document.getElementById("result");
+const resetButton = document.getElementById("resetButton");
 
 let selectedFile = null;
 
@@ -60,7 +60,6 @@ dropZone.addEventListener("drop", (event) => {
     }
 });
 
-//Formular
 wineForm.addEventListener("submit", async (event) => {
 
     event.preventDefault();
