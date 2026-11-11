@@ -135,15 +135,17 @@ public class OCRConverter {
 
         } while(Math.abs(oldThreshold - currentThreshold) >= 1);
 
+        System.out.println(" RIDLER calvard: " + currentThreshold);
         return currentThreshold;
     }
+
 
     public static BufferedImage binarize(BufferedImage originalImage) {
 
         BufferedImage grayScaledImg = grayScale(originalImage);
         double setImageThreshold = optimizeIsoData(grayScaledImg);
 
-        BufferedImage binarizedImage = new BufferedImage(grayScaledImg.getWidth(), grayScaledImg.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
+        BufferedImage binarizedImage = new BufferedImage(grayScaledImg.getWidth(), grayScaledImg.getHeight(), BufferedImage.TYPE_BYTE_BINARY);
         WritableRaster binarizedRaster = binarizedImage.getRaster();
 
         Raster greyImgRaster = grayScaledImg.getRaster();

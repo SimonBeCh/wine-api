@@ -35,6 +35,8 @@ h1 {
     font-size: 2.5rem;
     letter-spacing: -0.02em;
     margin-bottom: 24px;
+    text-align: center;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 form {
@@ -45,6 +47,7 @@ form {
     padding: 24px;
     border-radius: var(--radius);
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    background: linear-gradient(rgb(123 30 58 / 0.37), rgb(123 30 58 / 0.51));
 }
 
 #dropZone {
